@@ -32,46 +32,46 @@ public class MyBot extends TelegramLongPollingBot implements TelegramBotUtils{
             String data=update.getCallbackQuery().getData();
 
             switch (data) {
-                case "1" -> {
+                case "01" -> {
                     this.message = "u entered 1 " + data;
-                    execute(menu(), null);
+                    execute(this.message,this.chatId);
                 }
-                case "2" -> {
+                case "11" -> {
                     this.message = "u entered 2 " + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
-                case "3" -> {
+                case "21" -> {
                     this.message = "u entered 3 " + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
-                case "4" -> {
+                case "31" -> {
                     this.message = "u entered 4 " + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
-                case "5" -> {
+                case "41" -> {
                     this.message = "u entered 5 " + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
-                case "6" -> {
+                case "51" -> {
                     this.message = "u entered 6 " + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
-                case "7" -> {
+                case "61" -> {
                     this.message = "u entered 77" + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
-                case "8" -> {
+                case "71" -> {
                     this.message = "u entered 8 " + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
-                case "9" -> {
+                case "81" -> {
                     this.message = "u entered 9 " + data;
-                    execute(menu(), null);
+                    execute(this.message, this.chatId);
                 }
             }
         }
 
-        if (update.hasMessage()){
+        else if (update.hasMessage()){
 
             this.chatId=String.valueOf(update.getMessage().getChatId());
             String text=update.getMessage().getText();
@@ -84,15 +84,25 @@ public class MyBot extends TelegramLongPollingBot implements TelegramBotUtils{
 
             TelegramBotUtils telegramBotUtils= data ->{
                 if (data.equals("/start")){
-                   execute(menu(),null);
+                   execute1(menu(),null);
                 }else if(data.equals("/shownumbers")){
-                    execute(null, getBtn());
+                    execute1(null, getBtn());
                 }
             };
             telegramBotUtils.check(text);
         }
     }
-    private void execute(ReplyKeyboardMarkup r, InlineKeyboardMarkup i){
+    private void execute(String message,String chatId){
+        SendMessage sendMessage=new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.setText(message);
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+    private void execute1(ReplyKeyboardMarkup r, InlineKeyboardMarkup i){
         SendMessage sendMessage=new SendMessage();
         sendMessage.setChatId(this.chatId);
         sendMessage.setText(this.message);
@@ -127,12 +137,11 @@ public class MyBot extends TelegramLongPollingBot implements TelegramBotUtils{
         List<List<InlineKeyboardButton>> list=new ArrayList<>();
         inlineKeyboardMarkup.setKeyboard(list);
 
-
         List<InlineKeyboardButton> inlineKeyboardButtons=new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             InlineKeyboardButton inlineKeyboardButton=new InlineKeyboardButton();
             inlineKeyboardButton.setText(i+1+"");
-            inlineKeyboardButton.setCallbackData(String.valueOf(i+1));
+            inlineKeyboardButton.setCallbackData(String.valueOf(i+"1"));
             inlineKeyboardButtons.add(inlineKeyboardButton);
 
             if ((i+1)%3==0){
@@ -145,6 +154,5 @@ public class MyBot extends TelegramLongPollingBot implements TelegramBotUtils{
 
     @Override
     public void check(String data) {
-
     }
 }
